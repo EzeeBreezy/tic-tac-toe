@@ -1,1 +1,22 @@
-@import "~materialize-css/dist/css/materialize.min.css";
+@import '~materialize-css/dist/css/materialize.min.css';
+
+body {
+   display: flex !important;
+   min-height: 100vh !important;
+   flex-direction: column !important;
+   background-image: url(./assets/images/bgnd.jpg);
+}
+
+main {
+   flex: 1 0 auto !important;
+}
+
+.font-fam-mainheader {
+  font-family: 'Permanent Marker', cursive
+}
+
+.font-fam-tidy {
+  font-family: 'Indie Flower', cursive;
+  font-weight: bolder;
+  font-size: large
+}

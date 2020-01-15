@@ -7,12 +7,12 @@ import { Footer } from './components/Footer'
 
 function App() {
    const routes = useRoutes(false)
-  //  TODO add check to routes.js - game cant be switched to lobby if inporgress, lobby cant be switched to game if there is no game
-  // TODO {isAuth && <NavBar />}
+   //  TODO add check to routes.js - game cant be switched to lobby if inProgress, lobby cant be switched to game if there is no game
+   // TODO {isAuth && <NavBar />}
    return (
       <Router>
          <header>
-         <NavBar />
+            <NavBar />
          </header>
          <main className="container">{routes}</main>
          <Footer />
@@ -21,5 +21,3 @@ function App() {
 }
 
 export default App
-
-//TODO change favicon
