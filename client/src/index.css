@@ -1,6 +1,6 @@
 @import '~materialize-css/dist/css/materialize.min.css';
 
-body {
+div#root {
    display: flex !important;
    min-height: 100vh !important;
    flex-direction: column !important;

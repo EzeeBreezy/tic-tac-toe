@@ -8,4 +8,9 @@ const schema = new Schema({
    winner: { type: String, default: 'DRAW' } //TODO do I use type: Types.ObjectId, ref: 'User' here?
 })
 
+
+// schema.methods.getAt = function(x,y){
+//    return this.gameState[y*9 + x]
+// }
+// game.getAt(4,4)
 module.exports = model('Game', schema)

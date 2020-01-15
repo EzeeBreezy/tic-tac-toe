@@ -26,3 +26,8 @@ start()
 // io.on('connection', (socket) => {
 //     console.log(socket)
 // })
+
+
+//TODO telegram bot?
+//TODO chat?
+//TODO emotions?
