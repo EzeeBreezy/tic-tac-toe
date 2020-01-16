@@ -8,9 +8,14 @@ import socketIOClient from "socket.io-client"
 
 function App() {
    const routes = useRoutes(false)
-   const socket = socketIOClient("http://127.0.0.1:5000")
+   const socket = socketIOClient("http://localhost:5000")
 
-   socket.on('successfully connected with user', data => console.log(data))
+   socket.on('connection established', data => console.log(data))
+   socket.on('error', data => console.log(data))
+   socket.on('success', data => console.log(data))
+   socket.emit('authorization request', { login: 'blabla', password: 'blah' })
+
+
    //  TODO add check to routes.js - game cant be switched to lobby if inProgress, lobby cant be switched to game if there is no game
    // TODO {isAuth && <NavBar />}
    // TODO create random nav-footer color class object
