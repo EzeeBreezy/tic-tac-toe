@@ -23,9 +23,10 @@ async function start() {
 
 start()
 
-// io.on('connection', (socket) => {
-//     console.log(socket)
-// })
+io.on('connection', (socket) => {
+   let data = socket
+   socket.emit('successfully connected with user', { my: 'data' })
+})
 
 
 //TODO telegram bot?

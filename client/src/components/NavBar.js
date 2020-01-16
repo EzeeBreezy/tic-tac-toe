@@ -31,7 +31,7 @@ export const NavBar = () => {
                <li>
                   <a href="/" 
                   onClick={logoutHandler}
-                  className="font-fam-tidy"
+                  className="font-fam-tidy black-text"
                   >
                      Logout
                   </a>

@@ -3,8 +3,8 @@ import React from 'react'
 export const AuthPage = () => {
    return (
       <div className="row">
-         <div className="col s6 offset-s3">
-            <h1 className="light-blue-text text-darken-2 font-fam-mainheader">Strategic Tic-Tac-Toe</h1>
+         <div className="col s7 offset-s3">
+            <h1 className="light-blue-text text-darken-3 font-fam-mainheader">Strategic Tic-Tac-Toe</h1>
             <div className="card  blue-grey darken-3">
                <div className="card-content white-text">
                   <span className="card-title font-fam-tidy">Authorization</span>
@@ -15,7 +15,7 @@ export const AuthPage = () => {
                            id="login"
                            type="text"
                            name="login"
-                           className="yellow-input font-fam-tidy"
+                           className="font-fam-tidy white-text"
                            // value={form.login}
                            // onChange={changeHandler}
                         />
@@ -27,7 +27,7 @@ export const AuthPage = () => {
                            id="password"
                            type="password"
                            name="password"
-                           className="yellow-input font-fam-tidy"
+                           className="font-fam-tidy white-text"
                            // value={form.password}
                            // onChange={changeHandler}
                         />
