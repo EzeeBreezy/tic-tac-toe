@@ -18,10 +18,10 @@ const validator = require('validator')
 const PORT = config.get('port') || 5000
 
 //!SOCKET STUFF
-// const emitServerReply = (socket, type, statusCode, msg) => socket.emit(type, { status: statusCode, message: msg })
-const emitError = (socket, statusCode, msg) => socket.emit('error', { status: statusCode, message: msg })
+// const emitRequestReply = (socket, replyType, statusCode, msg, data = null) => socket.emit(replyType, { status: statusCode, message: msg, data })
+const emitError = (socket, statusCode, msg) => socket.emit('requestError', { status: statusCode, message: msg })
 const emitSuccess = (socket, statusCode, msg, data = null) =>
-   socket.emit('success', { status: statusCode, message: msg, data })
+   socket.emit('requestSuccess', { status: statusCode, message: msg, data })
 
 io.on('connection', socket => {
    console.log(`***user ${socket.id} connected`)
@@ -31,8 +31,7 @@ io.on('connection', socket => {
       console.log(`***user ${socket.id} disconnected`)
    })
 
-   socket.on('authorization request', async (data, socket) => {
-      //TODO socket cant be pushed inside itself
+   socket.on('authorization request', async (data) => {
       console.log(`***user ${socket.id} Authorization request`)
       try {
          const { login, password } = data
@@ -55,7 +54,7 @@ io.on('connection', socket => {
       }
    })
 
-   socket.on('registration request', async (data, socket) => {
+   socket.on('registration request', async (data) => {
       console.log(`***user ${socket.id} Registration request`)
       try {
          const { login, password } = data
@@ -95,6 +94,8 @@ async function start() {
 }
 
 start()
+
+//TODO check custom namespaces socket.io
 
 //TODO telegram bot?
 //TODO chat?

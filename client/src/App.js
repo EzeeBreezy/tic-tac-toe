@@ -9,9 +9,11 @@ import socketIOClient from "socket.io-client"
 function App() {
    const routes = useRoutes(false)
    const socket = socketIOClient("http://localhost:5000")
+   // const socket = socketIOClient("http://localhost:5000/api/socket")
+
 
    socket.on('connection established', data => console.log(data))
-   socket.on('error', data => console.log(data))
+   socket.on('requestError', data => console.log(data))
    socket.on('success', data => console.log(data))
    socket.emit('authorization request', { login: 'blabla', password: 'blah' })
 
