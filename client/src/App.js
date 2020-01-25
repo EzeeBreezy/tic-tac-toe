@@ -7,7 +7,7 @@ import { Footer } from './components/Footer'
 import socketIOClient from "socket.io-client"
 
 function App() {
-   const routes = useRoutes(false)
+   const routes = useRoutes(true)
    const socket = socketIOClient("http://localhost:5000")
    // const socket = socketIOClient("http://localhost:5000/api/socket")
 
