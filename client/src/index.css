@@ -20,3 +20,18 @@ main {
   font-weight: bolder;
   font-size: large
 }
+
+.SmallField {
+  background-image: url(./assets/images/redgrid.png);
+  width: 250px;
+  height: 250px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.BigField {
+  background-image: url(./assets/images/big.png);
+  height: 50vh;
+  background-repeat: no-repeat;
+  background-size: contain;
+}

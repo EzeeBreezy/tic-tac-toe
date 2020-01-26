@@ -3,21 +3,21 @@ import { Cell } from './Cell'
 
 export const SmallField = () => {
     return (
-        <table>
+        <table className='SmallField'>
             <tr>
-                <Cell />
-                <Cell />
-                <Cell />
+                <td><Cell /></td>
+                <td><Cell /></td>
+                <td><Cell /></td>
             </tr>
             <tr>
-                <Cell />
-                <Cell />
-                <Cell />
+                <td><Cell /></td>
+                <td><Cell /></td>
+                <td><Cell /></td>
             </tr>
             <tr>
-                <Cell />
-                <Cell />
-                <Cell />
+                <td><Cell /></td>
+                <td><Cell /></td>
+                <td><Cell /></td>
             </tr>
         </table>
     )

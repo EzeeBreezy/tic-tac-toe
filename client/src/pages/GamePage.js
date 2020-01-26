@@ -1,9 +1,10 @@
 import React from 'react'
+import { BigField } from '../components/gamefield/BigField'
 
 export const GamePage = () => {
    return (
       <div>
-         <h1>Game page</h1>
+         <BigField />
       </div>
    )
 }
