@@ -1,38 +1,44 @@
-  
-import React, { useContext } from 'react'
+import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
-// import { AuthContext } from '../context/AuthContext'
+import store from '../Redux-store'
+import { actionLogout } from '../actions/authActions'
 
-export const NavBar = () => {
-//    const auth = useContext(AuthContext)
+export const NavBar = ({appColor}) => {
    const history = useHistory()
    const logoutHandler = event => {
       event.preventDefault()
-    //   auth.logout()
+      localStorage.removeItem('userId')
+      localStorage.removeItem('userToken')
+      store.dispatch(actionLogout())
       history.push('/')
    }
    return (
       <nav>
-         <div className="nav-wrapper  light-blue darken-2" style={{ padding: '0 3rem' }}>
+         <div className={`nav-wrapper ${appColor}`} style={{ padding: '0 3rem' }}>
             <span className="brand-logo font-fam-mainheader">Strategic Tic-Tac-Toe</span>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
                <li>
-                  <NavLink to="/lobby" className="font-fam-tidy">Lobby</NavLink>
+                  <NavLink to="/lobby" className="font-fam-tidy">
+                     Lobby
+                  </NavLink>
                </li>
                <li>
-                  <NavLink to="/game" className="font-fam-tidy">Game</NavLink>
+                  <NavLink to="/game" className="font-fam-tidy">
+                     Game
+                  </NavLink>
                </li>
                <li>
-                  <NavLink to="/info" className="font-fam-tidy">Rules</NavLink>
+                  <NavLink to="/info" className="font-fam-tidy">
+                     Rules
+                  </NavLink>
                </li>
                <li>
-                  <NavLink to="/profile" className="font-fam-tidy">Profile</NavLink>
+                  <NavLink to="/profile" className="font-fam-tidy">
+                     Profile
+                  </NavLink>
                </li>
                <li>
-                  <a href="/" 
-                  onClick={logoutHandler}
-                  className="font-fam-tidy black-text"
-                  >
+                  <a href="/" onClick={logoutHandler} className="font-fam-tidy black-text">
                      Logout
                   </a>
                </li>

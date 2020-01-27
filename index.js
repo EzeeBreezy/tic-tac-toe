@@ -44,9 +44,9 @@ io.on('connection', socket => {
          if (!user) return emitError(socket, 404, 'User not found')
 
          const isMatch = await bcrypt.compare(password, user.password)
-         if (!isMatch) return emitError(socket, 401, 'user not found')
+         if (!isMatch) return emitError(socket, 401, 'User not found')
 
-         const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret')))
+         const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' }))
 
          emitSuccess(socket, 200, 'Authorization procedure passed successfully', { token, userId: user.id })
       } catch (e) {
@@ -68,10 +68,24 @@ io.on('connection', socket => {
          const hashedPassword = await bcrypt.hash(password, 12)
          const user = new User({ login, password: hashedPassword })
 
-         console.log(user)
-
          await user.save()
          emitSuccess(socket, 201, 'User created successfully', user.id)
+      } catch (e) {
+         emitError(socket, 500, 'Something went wrong, try again')
+      }
+   })
+
+   socket.on('reconnect request', async (data) => {
+      console.log(`***user ${socket.id} Reconnect request`)
+      try {
+         const decoded = jwt.verify(JSON.parse(data), config.get('jwtSecret'))
+
+         const user = await User.findOne({ "_id": decoded.userId })
+         if (!user) return emitError(socket, 404, 'User not found')
+
+         const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' }))
+
+         emitSuccess(socket, 200, 'Authorization procedure passed successfully', { token, userId: user.id })
       } catch (e) {
          emitError(socket, 500, 'Something went wrong, try again')
       }

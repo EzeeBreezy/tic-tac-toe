@@ -1,54 +1,56 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
+//TODO remove
+import { actionLogin } from '../actions/authActions'
 import store from '../Redux-store'
-import { actionLogin, actionLogout } from '../actions/authActions'
 
+//!!!!!!
 import socketIOClient from 'socket.io-client'
+//!!!!
 
-export const AuthPage = ({ becomeLoggedIn }) => {
+export const AuthPage = () => {
    const [form, setForm] = useState({
       login: '',
       password: ''
    })
 
-   useEffect(() => {
-      window.M.updateTextFields()
-   }, [])
-
    const changeHandler = event => {
       setForm({ ...form, [event.target.name]: event.target.value })
    }
-   // const registerHandler = async () => {
-   //    try {
-   //       const data = await request('/api/auth/register', 'POST', { ...form })
-   //       message(data.message)
-   //    } catch (e) {}
-   // }
-   const loginHandler = async () => {
-      try {
-         const socket = socketIOClient('http://localhost:5000')
-         socket.emit('authorization request', form ) 
-         socket.on('requestSuccess', reply => {
-            console.log(reply)
-            if (reply.status === 200) {
-               becomeLoggedIn()
-               localStorage.token = reply.data.token
-            } 
-         })
-         // {
-         //       socket.on('requestSuccess', data => {
-         //       console.log(data)
-         //       store.dispatch(actionLogin)
 
-         //    })
-         // } 
-         // console.log(form)
-
-
-         // const data = await request('/api/auth/login', 'POST', { ...form })
-         // store.dispatch(becomeLoggedIn(form))
-      } catch (e) {}
+   const loginHandler = () => {
+      const socket = socketIOClient('http://localhost:5000')
+      socket.emit('authorization request', form)
+      socket.on('requestSuccess', reply => {
+         if (reply.status === 200) {
+            //!!!!!!!!!!
+            // becomeLoggedIn()
+            //TODO remove
+            //!!!!!!!!!
+            store.dispatch(actionLogin())
+            localStorage.userToken = reply.data.token
+            localStorage.userId = reply.data.userId
+         }
+      })
+      socket.on('requestError', reply => {
+         window.M.toast({ html: reply.message, classes: 'rounded' })
+      })
    }
+
+   const registerHandler = () => {
+      const socket = socketIOClient('http://localhost:5000')
+      socket.emit('registration request', form)
+      socket.on('requestSuccess', reply => {
+         window.M.toast({ html: reply.message, classes: 'rounded' })
+      })
+      socket.on('requestError', reply => {
+         window.M.toast({ html: reply.message, classes: 'rounded' })
+      })
+   }
+
+   useEffect(() => {
+      window.M.updateTextFields()
+   }, [])
 
    return (
       <div className="row">
@@ -99,7 +101,7 @@ export const AuthPage = ({ becomeLoggedIn }) => {
                   </button>
                   <button
                      className="btn indigo accent-1 black-text font-fam-tidy"
-                     // onClick={registerHandler}
+                     onClick={registerHandler}
                      // disabled={loading}
                   >
                      Register
@@ -111,11 +113,11 @@ export const AuthPage = ({ becomeLoggedIn }) => {
    )
 }
 
-const connector = connect(state => ({ isAuthentincated: state.login.isAuthenticated }), {
-   becomeLoggedIn: actionLogin
-   // becomeLoggedOut: actionLogout
-   //TODO do i need logout here? NavBar, hah?
-   //TODO do i need mapStateToProps here?
-})
+// const connector = connect(state => ({ isAuthentincated: state.login.isAuthenticated }), {
+//    becomeLoggedIn: actionLogin
+//    // becomeLoggedOut: actionLogout
+//    //TODO do i need logout here? NavBar, hah?
+//    //TODO do i need mapStateToProps here?
+// })
 
-export const ConnectedAuthPage = connector(AuthPage)
+// export const ConnectedAuthPage = connector(AuthPage)

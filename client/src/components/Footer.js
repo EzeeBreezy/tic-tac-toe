@@ -3,10 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'
 
-export const Footer = () => {
-   //TODO make this fucker stick to bottom
+export const Footer = ({appColor}) => {
    return (
-      <footer className="page-footer light-blue darken-2">
+      <footer className={`page-footer ${appColor}`}>
          <div className="container">
             <div className="row">
                <div className="col l6 s12">
