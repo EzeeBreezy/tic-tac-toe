@@ -8,6 +8,7 @@ const config = require('config')
 
 //!SOCKET DEPENDENCIES
 const User = require('./models/User')
+const Game = require('./models/Game')
 const bcrypt = require('bcryptjs')
 // const config = require('config')
 const jwt = require('jsonwebtoken')
@@ -38,7 +39,6 @@ io.on('connection', socket => {
 
          let validationPassed = (validator.isEmail(login) && validator.isLength(password, { min: 6 })) || false
          if (!validationPassed) return emitError(socket, 400, 'Invalid type of credentials') 
-         login = validator.normilizeEmail(login)
 
          const user = await User.findOne({ login })
          if (!user) return emitError(socket, 404, 'User not found')
@@ -58,10 +58,9 @@ io.on('connection', socket => {
       console.log(`***user ${socket.id} Registration request`)
       try {
          const { login, password } = data
-
+         
          let validationPassed = (validator.isEmail(login) && validator.isLength(password, { min: 6 })) || false
          if (!validationPassed) return emitError(socket, 400, 'Invalid type of credentials')
-         login = validator.normilizeEmail(login)
 
          const candidate = await User.findOne({ login })
          if (candidate) return emitError(socket, 409, 'User already exists')
@@ -69,12 +68,15 @@ io.on('connection', socket => {
          const hashedPassword = await bcrypt.hash(password, 12)
          const user = new User({ login, password: hashedPassword })
 
+         console.log(user)
+
          await user.save()
          emitSuccess(socket, 201, 'User created successfully', user.id)
       } catch (e) {
          emitError(socket, 500, 'Something went wrong, try again')
       }
    })
+
 })
 
 //!END OF SOCKET STUFF

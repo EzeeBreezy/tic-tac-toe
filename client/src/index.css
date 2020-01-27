@@ -31,7 +31,13 @@ main {
 
 .BigField {
   background-image: url(./assets/images/big.png);
-  height: 50vh;
+  height: 800px;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
+}
+
+
+td {
+  text-align: center;
 }
