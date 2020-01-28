@@ -6,11 +6,11 @@ export const LobbyPage = () => {
    return (
       <>
          <div className="row">
-            <div className="col">
+            <div className="col s6">
                <UserList />
             </div>
 
-            <div className="col">
+            <div className="col s6">
             <Chat />
             </div>
          </div>

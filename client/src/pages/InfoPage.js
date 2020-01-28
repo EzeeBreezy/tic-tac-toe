@@ -3,7 +3,7 @@ import React from 'react'
 export const InfoPage = () => {
    return (
       <div className="row">
-         <div className="col">
+         <div className="col s6">
             <h2 className="font-fam-tidy">
                <strong className="font-fam-mainheader light-blue-text text-darken-2">Game board:</strong> Consists of 9
                ordinary tic-tac-toe boards
@@ -22,7 +22,7 @@ export const InfoPage = () => {
             </h2>
             <img src="#!" />
          </div>
-         <div className="col">
+         <div className="col s6">
             <h2 className="font-fam-tidy">
                <strong className="font-fam-mainheader light-blue-text text-darken-2">
                   If there is a tie the board:
@@ -40,3 +40,5 @@ export const InfoPage = () => {
       </div>
    )
 }
+
+//TODO collapsible?

@@ -10,3 +10,5 @@ export const UserList = () => {
       </>
    )
 }
+
+//TODO use className='pulse'

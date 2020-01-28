@@ -3,7 +3,7 @@ import { SmallField } from './SmallField'
 
 export const BigField = () => {
    return (
-      <table className="BigField">
+      <table className="BigField centered">
          <tbody>
             <tr>
                <td>
