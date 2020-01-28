@@ -47,3 +47,7 @@ export const NavBar = ({appColor}) => {
       </nav>
    )
 }
+
+//TODO add username?
+
+//TODO make inactive while there is no game -> useRoutes?

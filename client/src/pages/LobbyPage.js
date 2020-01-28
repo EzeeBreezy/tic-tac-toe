@@ -1,9 +1,19 @@
 import React from 'react'
+import { UserList } from '../components/lobby/UserList'
+import { Chat } from '../components/lobby/Chat'
 
 export const LobbyPage = () => {
    return (
-      <div>
-         <h1>Lobby page</h1>
-      </div>
+      <>
+         <div className="row">
+            <div className="col">
+               <UserList />
+            </div>
+
+            <div className="col">
+            <Chat />
+            </div>
+         </div>
+      </>
    )
 }

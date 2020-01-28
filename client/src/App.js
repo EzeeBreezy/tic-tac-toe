@@ -46,3 +46,7 @@ function App() {
 }
 
 export default App
+
+//TODO redux connect all components
+
+//TODO check all console logs, commented lines, fonts

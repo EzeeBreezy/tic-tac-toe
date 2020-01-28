@@ -42,3 +42,4 @@ export const useRoutes = isAuthenticated => {
 <GamePage />
 </Route> */
 }
+//TODO remove

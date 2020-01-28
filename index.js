@@ -113,8 +113,12 @@ start()
 
 //TODO check custom namespaces socket.io
 
+//TODO socket routes-handlers
+
+//TODO express static middleware
+
 //TODO telegram bot?
 //TODO chat?
-//TODO emotions?
 
-//TODO may need to use validator on front (https://www.npmjs.com/package/validator)
+//TODO redux on back
+

@@ -9,3 +9,5 @@ export const Cell = () => {
         </>
     )
 }
+
+//TODO set cells IDs

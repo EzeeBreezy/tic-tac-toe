@@ -23,15 +23,16 @@ main {
 
 .SmallField {
   background-image: url(./assets/images/redgrid.png);
-  width: 250px;
-  height: 250px;
+  width: 90%;
+  height: 90%;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .BigField {
   background-image: url(./assets/images/big.png);
-  height: 800px;
+  height: 600px;
+  width: 600px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -40,4 +41,5 @@ main {
 
 td {
   text-align: center;
+  padding: 0;
 }

@@ -20,6 +20,7 @@ export const AuthPage = () => {
 
    const loginHandler = () => {
       const socket = socketIOClient('http://localhost:5000')
+      //TODO hash pass before emmitting?
       socket.emit('authorization request', form)
       socket.on('requestSuccess', reply => {
          if (reply.status === 200) {
@@ -39,6 +40,8 @@ export const AuthPage = () => {
 
    const registerHandler = () => {
       const socket = socketIOClient('http://localhost:5000')
+      //TODO hash pass before emmitting?
+      //TODO may need to use validator on front (https://www.npmjs.com/package/validator)
       socket.emit('registration request', form)
       socket.on('requestSuccess', reply => {
          window.M.toast({ html: reply.message, classes: 'rounded' })
@@ -116,8 +119,10 @@ export const AuthPage = () => {
 // const connector = connect(state => ({ isAuthentincated: state.login.isAuthenticated }), {
 //    becomeLoggedIn: actionLogin
 //    // becomeLoggedOut: actionLogout
-//    //TODO do i need logout here? NavBar, hah?
+//    //TODO do i need logout here? NavBar, hah? **connect navbar if needed
 //    //TODO do i need mapStateToProps here?
 // })
 
 // export const ConnectedAuthPage = connector(AuthPage)
+
+//TODO add Loader
