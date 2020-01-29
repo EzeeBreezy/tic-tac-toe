@@ -1,8 +1,8 @@
 import React from 'react'
 
-export const Loader = () => (
-   <div style={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
-      <div className="preloader-wrapper active">
+export const Loader = ({size = ''}) => (
+   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem', height: '100%' }}>
+      <div className={"preloader-wrapper active "+`${size}`}>
          <div className="spinner-layer spinner-blue">
             <div className="circle-clipper left">
                <div className="circle"></div>

@@ -47,6 +47,8 @@ function App() {
 
 export default App
 
+
+//TODO add loader everywhere
 //TODO redux connect all components
 
 //TODO check all console logs, commented lines, fonts

@@ -4,7 +4,6 @@ import { AuthPage } from './pages/AuthPage'
 import { LobbyPage } from './pages/LobbyPage'
 import { GamePage } from './pages/GamePage'
 import { InfoPage } from './pages/InfoPage'
-import { ProfilePage } from './pages/ProfilePage'
 
 export const useRoutes = isAuthenticated => {
    if (isAuthenticated) {
@@ -18,9 +17,6 @@ export const useRoutes = isAuthenticated => {
             </Route>
             <Route path="/info" exact>
                <InfoPage />
-            </Route>
-            <Route path="/profile" exact>
-               <ProfilePage />
             </Route>
             <Redirect to="/lobby" />
          </Switch>
@@ -43,3 +39,5 @@ export const useRoutes = isAuthenticated => {
 </Route> */
 }
 //TODO remove
+
+//TODO make GAME inactive while there is no game -> useRoutes?

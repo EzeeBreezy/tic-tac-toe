@@ -5,10 +5,10 @@ const io = require('socket.io')(server)
 const config = require('config')
 // const mongoose = require('mongoose')
 
-
 //!SOCKET DEPENDENCIES
 const User = require('./models/User')
 const Game = require('./models/Game')
+const Message = require('./models/Message')
 const bcrypt = require('bcryptjs')
 // const config = require('config')
 const jwt = require('jsonwebtoken')
@@ -32,13 +32,14 @@ io.on('connection', socket => {
       console.log(`***user ${socket.id} disconnected`)
    })
 
-   socket.on('authorization request', async (data) => {
+   //*=========================AUTHORIZATION==============================
+   socket.on('authorization request', async data => {
       console.log(`***user ${socket.id} Authorization request`)
       try {
          const { login, password } = data
 
          let validationPassed = (validator.isEmail(login) && validator.isLength(password, { min: 6 })) || false
-         if (!validationPassed) return emitError(socket, 400, 'Invalid type of credentials') 
+         if (!validationPassed) return emitError(socket, 400, 'Invalid type of credentials')
 
          const user = await User.findOne({ login })
          if (!user) return emitError(socket, 404, 'User not found')
@@ -54,11 +55,11 @@ io.on('connection', socket => {
       }
    })
 
-   socket.on('registration request', async (data) => {
+   socket.on('registration request', async data => {
       console.log(`***user ${socket.id} Registration request`)
       try {
          const { login, password } = data
-         
+
          let validationPassed = (validator.isEmail(login) && validator.isLength(password, { min: 6 })) || false
          if (!validationPassed) return emitError(socket, 400, 'Invalid type of credentials')
 
@@ -75,12 +76,12 @@ io.on('connection', socket => {
       }
    })
 
-   socket.on('reconnect request', async (data) => {
+   socket.on('reconnect request', async data => {
       console.log(`***user ${socket.id} Reconnect request`)
       try {
          const decoded = jwt.verify(JSON.parse(data), config.get('jwtSecret'))
 
-         const user = await User.findOne({ "_id": decoded.userId })
+         const user = await User.findOne({ _id: decoded.userId })
          if (!user) return emitError(socket, 404, 'User not found')
 
          const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' }))
@@ -91,6 +92,35 @@ io.on('connection', socket => {
       }
    })
 
+   //*=========================CHAT==============================
+   socket.on('read all messages', async () => {
+      console.log(`***user ${socket.id} Read messages`)
+      //TODO read from backend store?
+      try {
+         const messages = await Message.find().populate('user', 'nickname')
+         console.log(messages)
+         if (!messages) return emitError(socket, 404, 'User not found')
+         socket.emit('messages', messages)
+      } catch (e) {
+         emitError(socket, 500, 'Something went wrong, try again')
+      }
+   })
+
+   socket.on('post message',async data => {
+      console.log(`***user ${socket.id} Post message`)
+      try {
+         const { user, message } = data
+         //TODO do i need check user and user type here?
+         const newMessage = new Message({ user, message })
+         await newMessage.save()
+
+         socket.broadcast.emit('new chat message', newMessage)
+
+         emitSuccess(socket, 201, 'Message saved successfully', newMessage)
+      } catch (e) {
+         emitError(socket, 500, 'Something went wrong, try again')
+      }
+   })
 })
 
 //!END OF SOCKET STUFF
@@ -121,4 +151,3 @@ start()
 //TODO chat?
 
 //TODO redux on back
-

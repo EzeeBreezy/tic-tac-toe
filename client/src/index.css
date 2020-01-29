@@ -43,3 +43,7 @@ td {
   text-align: center;
   padding: 0;
 }
+
+.sidenav {
+  background-image: linear-gradient(to bottom right, #b2ebf2 , #ffecb3);
+}
