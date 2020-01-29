@@ -113,10 +113,12 @@ io.on('connection', socket => {
          //TODO do i need check user and user type here?
          const newMessage = new Message({ user, message })
          await newMessage.save()
+         
+         //TODO second request to base...
+         const id = newMessage._id
+         const userMessage = await Message.findOne({ _id: id }).populate('user', 'nickname')
 
-         socket.broadcast.emit('new chat message', newMessage)
-
-         emitSuccess(socket, 201, 'Message saved successfully', newMessage)
+         socket.broadcast.emit('new chat message', userMessage)
       } catch (e) {
          emitError(socket, 500, 'Something went wrong, try again')
       }

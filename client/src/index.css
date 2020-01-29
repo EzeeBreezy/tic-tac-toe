@@ -47,3 +47,8 @@ td {
 .sidenav {
   background-image: linear-gradient(to bottom right, #b2ebf2 , #ffecb3);
 }
+
+.y-scroll {
+  overflow-y: auto;
+  padding-right : 15px;
+}
