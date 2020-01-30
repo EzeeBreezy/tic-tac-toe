@@ -8,7 +8,7 @@ export const Score = () => {
          <div className="row">
             <div className="col s4 center-align">
                <img src="#!" />
-               <h4 className="font-fam-mainheader">Own Name</h4>
+               <h4 className="font-fam-mainheader">Own name</h4>
                <img src="./X.png" width="100px" />
             </div>
 

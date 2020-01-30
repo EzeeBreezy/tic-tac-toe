@@ -12,8 +12,8 @@ import { randomAppColor } from './helpers/appColors'
 
 
 function App() {
-   const [isAuthenticated, setAuthenticated] = useState(store.getState().login.isAuthenticated)
-   store.subscribe(() => setAuthenticated(store.getState().login.isAuthenticated))
+   const [isAuthenticated, setAuthenticated] = useState(store.getState().user.isAuthenticated)
+   store.subscribe(() => setAuthenticated(store.getState().user.isAuthenticated))
    const routes = useRoutes(isAuthenticated)
    const socket = socketIOClient('http://localhost:5000')
    socket.on('connection established', data => console.log(data))
@@ -23,9 +23,9 @@ function App() {
    }
    socket.on('requestSuccess', reply => {
       if (reply.status === 200) {
-         store.dispatch(actionLogin())
+         store.dispatch(actionLogin(reply.data.clearedUser))
          localStorage.userToken = reply.data.token
-         localStorage.userId = reply.data.userId
+         localStorage.userId = reply.data.clearedUser._id
       }
    })
    

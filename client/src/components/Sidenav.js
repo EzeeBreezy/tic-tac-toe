@@ -1,22 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faPlus } from '@fortawesome/free-solid-svg-icons'
+import store from '../Redux-store'
 
 export const Sidenav = () => {
+   const [ nickname, setNickname ] = useState('Username')
+   store.subscribe(() => setNickname(store.getState().user.nickname))
+   const [ login, setLogin ] = useState('EMAIL')
+   store.subscribe(() => setLogin(store.getState().user.login))
    return (
       <ul id="profile" className="sidenav">
          <li>
             <div className="user-view">
-               <div href="#!">
+               <div>
                   <img className="circle" src="#!" />
-                  <a className="btn-floating btn-small waves-effect waves-light red hoverable" >
+                  <a className="btn-floating btn-small waves-effect waves-light red hoverable" href="#!" >
                      <i className="material-icons" style={{ fontSize: '0.9rem' }}>
                         <FontAwesomeIcon icon={faPlus} />
                      </i>
                   </a>
                </div>
                <div>
-                  <span className="light-blue-text text-darken-4 font-fam-mainheader">User Name</span>
+                  <span className="light-blue-text text-darken-4 font-fam-mainheader">{nickname}</span>
                   <a className="btn-floating btn-small waves-effect waves-light red hoverable" href="#!">
                      <i className="material-icons" style={{ fontSize: '0.9rem' }}>
                         <FontAwesomeIcon icon={faPen} />
@@ -24,7 +29,7 @@ export const Sidenav = () => {
                   </a>
                </div>
                <a href="#!">
-                  <span className="light-blue-text text-darken-2 font-fam-mainheader">account@email.com</span>
+                  <span className="light-blue-text text-darken-2 font-fam-mainheader">{login}</span>
                </a>
             </div>
          </li>

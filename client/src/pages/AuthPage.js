@@ -31,9 +31,9 @@ export const AuthPage = () => {
             // becomeLoggedIn()
             //TODO remove
             //!!!!!!!!!
-            store.dispatch(actionLogin())
+            store.dispatch(actionLogin(reply.data.clearedUser))
             localStorage.userToken = reply.data.token
-            localStorage.userId = reply.data.userId
+            localStorage.userId = reply.data.clearedUser._id
             setLoading(false)
          }
       })

@@ -41,15 +41,18 @@ io.on('connection', socket => {
          let validationPassed = (validator.isEmail(login) && validator.isLength(password, { min: 6 })) || false
          if (!validationPassed) return emitError(socket, 400, 'Invalid type of credentials')
 
-         const user = await User.findOne({ login })
+         let user = await User.findOne({ login })
          if (!user) return emitError(socket, 404, 'User not found')
 
          const isMatch = await bcrypt.compare(password, user.password)
          if (!isMatch) return emitError(socket, 401, 'User not found')
 
+         const { messages, __v, ...clearedUser} = user._doc
+         delete clearedUser.password
+
          const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' }))
 
-         emitSuccess(socket, 200, 'Authorization procedure passed successfully', { token, userId: user.id })
+         emitSuccess(socket, 200, 'Authorization procedure passed successfully', { token, clearedUser })
       } catch (e) {
          emitError(socket, 500, 'Something went wrong, try again')
       }
@@ -84,9 +87,12 @@ io.on('connection', socket => {
          const user = await User.findOne({ _id: decoded.userId })
          if (!user) return emitError(socket, 404, 'User not found')
 
+         const { messages, __v, ...clearedUser} = user._doc
+         delete clearedUser.password
+
          const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' }))
 
-         emitSuccess(socket, 200, 'Authorization procedure passed successfully', { token, userId: user.id })
+         emitSuccess(socket, 200, 'Authorization procedure passed successfully', { token, clearedUser })
       } catch (e) {
          emitError(socket, 500, 'Something went wrong, try again')
       }
@@ -149,9 +155,8 @@ start()
 //TODO express static middleware
 
 //TODO telegram bot?
-//TODO chat?
 
 //TODO redux on back
 
 
-//TODO asmer - pictures, sockets, reducers
+//TODO asmer - pictures, sockets, reducers(+messageReducer?), gamefield, is it normal to have jwt reconnect?, should i hash pwd on front?, keep system messages in model?

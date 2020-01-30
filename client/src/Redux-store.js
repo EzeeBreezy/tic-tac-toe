@@ -1,10 +1,10 @@
 import { createStore, combineReducers } from 'redux'
-import { loginReducer } from './reducers/loginReducer'
-import { playersReducer } from './reducers/playersReducer'
+import { gameReducer } from './reducers/gameReducer'
+import { userReducer } from './reducers/userReducer'
 
 const reducers = combineReducers({
-   login: loginReducer,
-   players: playersReducer
+   game: gameReducer,
+   user: userReducer
 })
 
 const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import store from '../Redux-store'
 import { actionLogout } from '../actions/authActions'
@@ -7,6 +7,10 @@ import { Sidenav } from './Sidenav'
 
 export const NavBar = ({ appColor }) => {
    const history = useHistory()
+
+   const [ nickname, setNickname ] = useState('Username')
+   store.subscribe(() => setNickname(store.getState().user.nickname))
+   // setNickname(store.getState().user.nickname)
 
    const logoutHandler = event => {
       event.preventDefault()
@@ -53,7 +57,7 @@ export const NavBar = ({ appColor }) => {
                      onClick={sideNavHandler}
                      className="sidenav-trigger show-on-large font-fam-tidy black-text"
                   >
-                     UserName
+                     {nickname}
                   </a>
                </li>
                <li>
