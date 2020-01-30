@@ -69,6 +69,6 @@ export const NavBar = ({ appColor }) => {
    )
 }
 
-//TODO add username?
+//TODO add username from store
 
 

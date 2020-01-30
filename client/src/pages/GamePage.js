@@ -17,6 +17,3 @@ export const GamePage = () => {
       </>
    )
 }
-
-//TODO className divider
-//TODO hoverable

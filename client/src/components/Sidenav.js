@@ -9,7 +9,7 @@ export const Sidenav = () => {
             <div className="user-view">
                <div href="#!">
                   <img className="circle" src="#!" />
-                  <a className="btn-floating btn-small waves-effect waves-light red" >
+                  <a className="btn-floating btn-small waves-effect waves-light red hoverable" >
                      <i className="material-icons" style={{ fontSize: '0.9rem' }}>
                         <FontAwesomeIcon icon={faPlus} />
                      </i>
@@ -17,7 +17,7 @@ export const Sidenav = () => {
                </div>
                <div>
                   <span className="light-blue-text text-darken-4 font-fam-mainheader">User Name</span>
-                  <a className="btn-floating btn-small waves-effect waves-light red" href="#!">
+                  <a className="btn-floating btn-small waves-effect waves-light red hoverable" href="#!">
                      <i className="material-icons" style={{ fontSize: '0.9rem' }}>
                         <FontAwesomeIcon icon={faPen} />
                      </i>

@@ -68,7 +68,7 @@ export const Chat = () => {
                      <div className="input-field col s12">
                         <i className="material-icons prefix">
                            <a
-                              className="btn-floating btn waves-effect waves cyan darken-3"
+                              className="btn-floating btn waves-effect waves cyan darken-3 hoverable"
                               onClick={sendMessage}
                               disabled={!msgInpValue}
                            >
@@ -87,5 +87,3 @@ export const Chat = () => {
 }
 
 //TODO compMount - add event listener on ENTER (()=>onBTNclick()) // comp dismount -> destroy
-
-//TODO 'enter' listener for chat

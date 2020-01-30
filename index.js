@@ -98,7 +98,6 @@ io.on('connection', socket => {
       //TODO read from backend store?
       try {
          const messages = await Message.find().populate('user', 'nickname')
-         console.log(messages)
          if (!messages) return emitError(socket, 404, 'User not found')
          socket.emit('messages', messages)
       } catch (e) {
@@ -153,3 +152,6 @@ start()
 //TODO chat?
 
 //TODO redux on back
+
+
+//TODO asmer - pictures, sockets, reducers
