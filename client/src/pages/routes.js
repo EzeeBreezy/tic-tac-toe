@@ -1,9 +1,9 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { AuthPage } from './pages/AuthPage'
-import { LobbyPage } from './pages/LobbyPage'
-import { GamePage } from './pages/GamePage'
-import { InfoPage } from './pages/InfoPage'
+import { ConnectedAuthPage as AuthPage } from './AuthPage'
+import { LobbyPage } from './LobbyPage'
+import { GamePage } from './GamePage'
+import { InfoPage } from './InfoPage'
 
 export const useRoutes = isAuthenticated => {
    if (isAuthenticated) {

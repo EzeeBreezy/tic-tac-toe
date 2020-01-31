@@ -1,9 +1,12 @@
 import React from 'react'
+import picX from '../../assets/images/X.png'
+import picO from '../../assets/images/O.png'
+
 
 export const Cell = () => {
    return (
       <>
-         <img src="./O.png" width="42px"/>
+         <img src={picO} width="42px"/>
       </>
    )
 }

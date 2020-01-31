@@ -1,22 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
-import store from '../Redux-store'
 import { actionLogout } from '../actions/authActions'
-import { Sidenav } from './Sidenav'
+import { connect } from 'react-redux'
+import { ConnectedSidenav as Sidenav } from './Sidenav'
 
 
-export const NavBar = ({ appColor }) => {
+function NavBar({ appColor, nickname, logOut }) {
    const history = useHistory()
-
-   const [ nickname, setNickname ] = useState('Username')
-   store.subscribe(() => setNickname(store.getState().user.nickname))
-   // setNickname(store.getState().user.nickname)
 
    const logoutHandler = event => {
       event.preventDefault()
       localStorage.removeItem('userId')
       localStorage.removeItem('userToken')
-      store.dispatch(actionLogout())
+      logOut()
       history.push('/')
    }
 
@@ -73,6 +69,6 @@ export const NavBar = ({ appColor }) => {
    )
 }
 
-//TODO add username from store
+const connected = connect(state => ({ nickname: state.user.nickname }), { logOut: actionLogout })
 
-
+export const ConnectedNavBar = connected(NavBar)

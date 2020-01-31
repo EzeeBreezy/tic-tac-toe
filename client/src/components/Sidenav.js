@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faPlus } from '@fortawesome/free-solid-svg-icons'
-import store from '../Redux-store'
+import { connect } from 'react-redux'
 
-export const Sidenav = () => {
-   const [ nickname, setNickname ] = useState('Username')
-   store.subscribe(() => setNickname(store.getState().user.nickname))
-   const [ login, setLogin ] = useState('EMAIL')
-   store.subscribe(() => setLogin(store.getState().user.login))
+
+function Sidenav({ nickname, login }) {
+
    return (
       <ul id="profile" className="sidenav">
          <li>
@@ -75,3 +73,7 @@ export const Sidenav = () => {
       </ul>
    )
 }
+
+const connected = connect(state => ({ nickname: state.user.nickname, login: state.user.login }), null)
+
+export const ConnectedSidenav = connected(Sidenav)

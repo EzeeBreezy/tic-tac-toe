@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { actionLogin } from '../actions/authActions'
-import store from '../Redux-store'
+import { connect } from 'react-redux'
 import { Loader } from '../components/Loader'
 
 //!!!!!!
 import socketIOClient from 'socket.io-client'
-
 //!!!!
 
-export const AuthPage = () => {
+function AuthPage ({ loginAction }) {
    const [form, setForm] = useState({
       login: '',
       password: ''
@@ -20,23 +19,24 @@ export const AuthPage = () => {
       setForm({ ...form, [event.target.name]: event.target.value })
    }
 
-   const loginHandler = () => {
+   //!!!!!!!!!!!!!!
       const socket = socketIOClient('http://localhost:5000')
+   //!!!!!!!!!!!!!
+
+   const loginHandler = () => {
       //TODO hash pass before emmitting?
       socket.emit('authorization request', form)
       setLoading(true)
+
       socket.on('requestSuccess', reply => {
          if (reply.status === 200) {
-            //!!!!!!!!!!
-            // becomeLoggedIn()
-            //TODO remove
-            //!!!!!!!!!
-            store.dispatch(actionLogin(reply.data.clearedUser))
+            loginAction(reply.data.clearedUser)
             localStorage.userToken = reply.data.token
             localStorage.userId = reply.data.clearedUser._id
             setLoading(false)
          }
       })
+
       socket.on('requestError', reply => {
          window.M.toast({ html: reply.message, classes: 'rounded' })
          setLoading(false)
@@ -44,15 +44,16 @@ export const AuthPage = () => {
    }
 
    const registerHandler = () => {
-      const socket = socketIOClient('http://localhost:5000')
       //TODO hash pass before emmitting?
       //TODO may need to use validator on front (https://www.npmjs.com/package/validator)
       socket.emit('registration request', form)
       setLoading(true)
+
       socket.on('requestSuccess', reply => {
          window.M.toast({ html: reply.message, classes: 'rounded' })
          setLoading(false)
       })
+      
       socket.on('requestError', reply => {
          window.M.toast({ html: reply.message, classes: 'rounded' })
          setLoading(false)
@@ -62,6 +63,18 @@ export const AuthPage = () => {
    useEffect(() => {
       window.M.updateTextFields()
    }, [])
+
+
+   if (localStorage.userToken) {
+      socket.emit('reconnect request', localStorage.userToken)
+   }
+   socket.on('requestSuccess', reply => {
+      if (reply.status === 200) {
+         loginAction(reply.data.clearedUser)
+         localStorage.userToken = reply.data.token
+         localStorage.userId = reply.data.clearedUser._id
+      }
+   })
 
    return (
       <div className="row">
@@ -130,13 +143,9 @@ export const AuthPage = () => {
    )
 }
 
-// const connector = connect(state => ({ isAuthentincated: state.login.isAuthenticated }), {
-//    becomeLoggedIn: actionLogin
-//    // becomeLoggedOut: actionLogout
-//    //TODO connect to store components if needed
-//    //TODO do i need mapStateToProps here?
-// })
 
-// export const ConnectedAuthPage = connector(AuthPage)
+const connected = connect(state => ({}), { loginAction: actionLogin })
+
+export const ConnectedAuthPage = connected(AuthPage)
 
 //TODO setTimeout to avoid endless server response waiting time

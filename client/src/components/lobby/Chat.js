@@ -30,12 +30,6 @@ export const Chat = () => {
       socket.emit('post message', { user: localStorage.userId, message: msgInpValue })
       setMsgInpValue('')
 
-      // window.M.updateTextFields()
-      //TODO update text field after send
-      // useEffect(() => {
-      //    window.M.updateTextFields()
-      // }, [])
-
       socket.on('requestError', reply => {
          window.M.toast({ html: reply.message, classes: 'rounded' })
       })

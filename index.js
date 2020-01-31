@@ -159,4 +159,7 @@ start()
 //TODO redux on back
 
 
-//TODO asmer - pictures, sockets, reducers(+messageReducer?), gamefield, is it normal to have jwt reconnect?, should i hash pwd on front?, keep system messages in model?
+
+//TODO asmer - is it normal to have jwt reconnect?, should i hash pwd on front? (+validate?), keep system messages in model?
+//TODO asmer - fix date in Messages, gamefield set cells IDs
+//TODO asmer - pictures notimported, sockets(front/back/to store?), reducers(+messageReducer?) 

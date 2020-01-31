@@ -1,6 +1,10 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFlag, faFistRaised, faHandshake } from '@fortawesome/free-solid-svg-icons'
+import picVS from '../../assets/images/vs.png'
+import picX from '../../assets/images/X.png'
+import picO from '../../assets/images/O.png'
+
 
 export const Score = () => {
    return (
@@ -9,17 +13,17 @@ export const Score = () => {
             <div className="col s4 center-align">
                <img src="#!" />
                <h4 className="font-fam-mainheader">Own name</h4>
-               <img src="./X.png" width="100px" />
+               <img src={picX} width="100px" />
             </div>
 
             <div className="col s4 center-align valign-wrapper">
-               <img src="./vs.png" width="150px" />
+               <img src={picVS} width="150px" />
             </div>
 
             <div className="col s4 center-align">
                <h4 className="font-fam-mainheader">Opponent Name</h4>
                <img src="#!" /> <br/>
-               <img src="./O.png" width="100px" />
+               <img src={picO} width="100px" />
             </div>
          </div>
 
@@ -63,4 +67,4 @@ export const Score = () => {
    )
 }
 
-//TODO figure out how to place pictures
+//TODO read avatars

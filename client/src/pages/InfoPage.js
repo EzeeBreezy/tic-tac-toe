@@ -41,4 +41,4 @@ export const InfoPage = () => {
    )
 }
 
-//TODO collapsible?
+//TODO insert screenshots
