@@ -114,15 +114,13 @@ io.on('connection', socket => {
       console.log(`***user ${socket.id} Post message`)
       try {
          const { user, message } = data
-         //TODO do i need check user and user type here?
          const newMessage = new Message({ user, message })
          await newMessage.save()
          
-         //TODO second request to base...
          const id = newMessage._id
          const userMessage = await Message.findOne({ _id: id }).populate('user', 'nickname')
 
-         socket.broadcast.emit('new chat message', userMessage)
+         io.emit('new chat message', userMessage)
          console.log('posted message sent back', userMessage)
       } catch (e) {
          emitError(socket, 500, 'Something went wrong, try again')
@@ -161,6 +159,7 @@ start()
 
 
 
-//TODO asmer - keep system messages in model?
-//TODO asmer - fix date in Messages, gamefield set cells IDs
-//TODO asmer - pictures notimported - use multer, sockets(front/back/to store?), reducers(+messageReducer?) 
+//TODO asmer - keep system messages in model (back redux)?, gamefield set cells IDs
+//TODO asmer - pictures notimported - use multer, 
+//TODO asmer - sockets(front/back/to store?), 
+//TODO asmer - reducers(+messageReducer?) - front:local game, global user+game// back: global register, game

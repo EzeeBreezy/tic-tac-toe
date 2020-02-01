@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { Messages } from './Messages'
@@ -14,7 +14,6 @@ export const Chat = () => {
 
    //!!!!!!========socket stuff===========
    
-
    const [msgList, setMsgList] = useState([])
 
    useEffect(() => {
@@ -36,25 +35,10 @@ export const Chat = () => {
    }
 
 
-
    socket.on('new chat message', data => {
-      setMsgList([...msgList, data])
       console.log('new msg received: ', data)
+      setMsgList([...msgList, data])
    })
-
-
-
-
-   // useEffect(() => {
-   //    socket.on('new chat message', data => {
-   //       setMsgList([...msgList, data])
-   // console.log('new msg received: ', data)
-
-   //    })
-   // }, [msgList])
-
-
-
 
 
    //!!!!!!!!!!!!!!!!!!!========end socket stuff===========

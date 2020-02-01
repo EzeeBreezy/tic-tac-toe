@@ -33,11 +33,4 @@ export const useRoutes = isAuthenticated => {
    )
 }
 
-{
-   /* <Route path='/game/:id' exact>
-<GamePage />
-</Route> */
-}
-//TODO remove
-
 //TODO make GAME inactive while there is no game -> useRoutes?
