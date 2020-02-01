@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { actionLogin } from '../actions/authActions'
 import { connect } from 'react-redux'
 import { Loader } from '../components/Loader'
+import socket from '../helpers/socket'
 
-//!!!!!!
-import socketIOClient from 'socket.io-client'
-//!!!!
 
 function AuthPage ({ loginAction }) {
    const [form, setForm] = useState({
@@ -19,12 +17,7 @@ function AuthPage ({ loginAction }) {
       setForm({ ...form, [event.target.name]: event.target.value })
    }
 
-   //!!!!!!!!!!!!!!
-      const socket = socketIOClient('http://localhost:5000')
-   //!!!!!!!!!!!!!
-
    const loginHandler = () => {
-      //TODO hash pass before emmitting?
       socket.emit('authorization request', form)
       setLoading(true)
 
@@ -44,8 +37,6 @@ function AuthPage ({ loginAction }) {
    }
 
    const registerHandler = () => {
-      //TODO hash pass before emmitting?
-      //TODO may need to use validator on front (https://www.npmjs.com/package/validator)
       socket.emit('registration request', form)
       setLoading(true)
 

@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { Messages } from './Messages'
 import { Loader } from '../Loader'
+import socket from '../../helpers/socket'
 
-//!!!!!! ========socket stuff===========
-import socketIOClient from 'socket.io-client'
-//!!!!!!========end socket stuff===========
 
 export const Chat = () => {
    const [msgInpValue, setMsgInpValue] = useState('')
@@ -15,31 +13,49 @@ export const Chat = () => {
 
 
    //!!!!!!========socket stuff===========
-   const socket = socketIOClient('http://localhost:5000')
-   socket.emit('read all messages')
+   
 
    const [msgList, setMsgList] = useState([])
 
    useEffect(() => {
+      socket.emit('read all messages', () => console.log('msg history request'))
       socket.on('messages', data => {
          setMsgList([...data])
+         console.log('msg history received')
       })
    }, [])
 
    const sendMessage = () => {
       socket.emit('post message', { user: localStorage.userId, message: msgInpValue })
       setMsgInpValue('')
+      console.log('msg sent')
 
       socket.on('requestError', reply => {
          window.M.toast({ html: reply.message, classes: 'rounded' })
       })
    }
 
-   useEffect(() => {
-      socket.on('new chat message', data => {
-         setMsgList([...msgList, data])
-      })
-   }, [msgList])
+
+
+   socket.on('new chat message', data => {
+      setMsgList([...msgList, data])
+      console.log('new msg received: ', data)
+   })
+
+
+
+
+   // useEffect(() => {
+   //    socket.on('new chat message', data => {
+   //       setMsgList([...msgList, data])
+   // console.log('new msg received: ', data)
+
+   //    })
+   // }, [msgList])
+
+
+
+
 
    //!!!!!!!!!!!!!!!!!!!========end socket stuff===========
 

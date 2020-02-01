@@ -26,7 +26,6 @@ const emitSuccess = (socket, statusCode, msg, data = null) =>
 
 io.on('connection', socket => {
    console.log(`***user ${socket.id} connected`)
-   socket.emit('connection established', { socketId: socket.id })
 
    socket.on('disconnect', () => {
       console.log(`***user ${socket.id} disconnected`)
@@ -124,8 +123,10 @@ io.on('connection', socket => {
          const userMessage = await Message.findOne({ _id: id }).populate('user', 'nickname')
 
          socket.broadcast.emit('new chat message', userMessage)
+         console.log('posted message sent back', userMessage)
       } catch (e) {
          emitError(socket, 500, 'Something went wrong, try again')
+         console.log('new chat message broadcast error')
       }
    })
 })
@@ -160,6 +161,6 @@ start()
 
 
 
-//TODO asmer - is it normal to have jwt reconnect?, should i hash pwd on front? (+validate?), keep system messages in model?
+//TODO asmer - keep system messages in model?
 //TODO asmer - fix date in Messages, gamefield set cells IDs
-//TODO asmer - pictures notimported, sockets(front/back/to store?), reducers(+messageReducer?) 
+//TODO asmer - pictures notimported - use multer, sockets(front/back/to store?), reducers(+messageReducer?) 

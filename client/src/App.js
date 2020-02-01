@@ -6,7 +6,6 @@ import { ConnectedNavBar as NavBar } from './components/NavBar'
 import { Footer } from './components/Footer'
 import { Provider } from 'react-redux'
 import store from './Redux-store'
-import socketIOClient from 'socket.io-client'
 import { randomAppColor } from './helpers/appColors' 
 
 
@@ -14,9 +13,6 @@ function App() {
    const [isAuthenticated, setAuthenticated] = useState(store.getState().user.isAuthenticated)
    store.subscribe(() => setAuthenticated(store.getState().user.isAuthenticated))
    const routes = useRoutes(isAuthenticated)
-
-   const socket = socketIOClient('http://localhost:5000')
-   socket.on('connection established', data => console.log(data))
 
    return (
       <Provider store={store}>
