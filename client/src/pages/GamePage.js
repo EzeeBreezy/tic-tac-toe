@@ -1,5 +1,5 @@
 import React from 'react'
-import { BigField } from '../components/gamefield/BigField'
+import { ConnectedBigField as BigField } from '../components/gamefield/BigField'
 import { Score } from '../components/gamefield/Score'
 
 export const GamePage = () => {

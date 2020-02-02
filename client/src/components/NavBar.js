@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import { actionLogout } from '../actions/authActions'
 import { connect } from 'react-redux'

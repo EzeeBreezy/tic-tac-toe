@@ -1,43 +1,20 @@
 import React from 'react'
-import { Cell } from './Cell'
+import { ConnectedCell as Cell } from './Cell'
 
-export const SmallField = () => {
+
+export const SmallField = ({ fieldState, coords }) => {
    return (
       <table className="SmallField" align="center">
          <tbody>
-            <tr>
-               <td>
-                  <Cell />
-               </td>
-               <td>
-                  <Cell />
-               </td>
-               <td>
-                  <Cell />
-               </td>
-            </tr>
-            <tr>
-               <td>
-                  <Cell />
-               </td>
-               <td>
-                  <Cell />
-               </td>
-               <td>
-                  <Cell />
-               </td>
-            </tr>
-            <tr>
-               <td>
-                  <Cell />
-               </td>
-               <td>
-                  <Cell />
-               </td>
-               <td>
-                  <Cell />
-               </td>
-            </tr>
+            {fieldState.map((row, rowIndex) => (
+               <tr key={`${coords}${rowIndex}`} >
+                  {row.map((sign, cellIndex) => (
+                     <td key={`${coords}${rowIndex}${cellIndex}`}>
+                        <Cell className='hoverable' sign={sign} coords={`${coords}${rowIndex}${cellIndex}`} />
+                     </td>
+                  ))}
+               </tr>
+            ))}
          </tbody>
       </table>
    )
