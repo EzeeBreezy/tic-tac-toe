@@ -1,5 +1,5 @@
 import React from 'react'
-import { UserList } from '../components/lobby/UserList'
+import { PlayersList } from '../components/lobby/PlayersList'
 import { Chat } from '../components/lobby/Chat'
 
 export const LobbyPage = () => {
@@ -7,7 +7,7 @@ export const LobbyPage = () => {
       <>
          <div className="row">
             <div className="col s6">
-               <UserList />
+               <PlayersList />
             </div>
 
             <div className="col s6">

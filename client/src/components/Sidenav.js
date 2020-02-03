@@ -77,3 +77,5 @@ function Sidenav({ nickname, login }) {
 const connected = connect(state => ({ nickname: state.user.nickname, login: state.user.login }), null)
 
 export const ConnectedSidenav = connected(Sidenav)
+
+//TODO status change

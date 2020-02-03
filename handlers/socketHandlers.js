@@ -5,15 +5,21 @@ const bcrypt = require('bcryptjs')
 const config = require('config')
 const jwt = require('jsonwebtoken')
 const validator = require('validator')
-
+const store = require('../reducers/Redux-store')
 
 const emitError = (socket, statusCode, msg) => socket.emit('requestError', { status: statusCode, message: msg })
 const emitSuccess = (socket, statusCode, msg, data = null) =>
    socket.emit('requestSuccess', { status: statusCode, message: msg, data })
 
-function socketHandlers(socket) {
-   console.log(`***user ${socket.id} connected`)
 
+   store.subscribe(() => console.log(store.getState()))
+
+function socketHandlers(socket) {
+
+   console.log(`***user ${socket.id} connected`)
+//!!!!!!!!!!!!!!!!!!!!!!!!
+   console.log(store.getState())
+//!!!!!!!!!!!!!!!!!!!!!!!!!!
    socket.on('disconnect', () => {
       console.log(`***user ${socket.id} disconnected`)
    })
@@ -125,6 +131,11 @@ function socketHandlers(socket) {
          console.log('new chat message broadcast error')
       }
    })
+
+
+
+   //*=========================USER LIST============================
+
 }
 
  

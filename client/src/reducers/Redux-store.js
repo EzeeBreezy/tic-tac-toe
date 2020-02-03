@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux'
-import { gameReducer } from './reducers/gameReducer'
-import { userReducer } from './reducers/userReducer'
+import { gameReducer } from './gameReducer'
+import { userReducer } from './userReducer'
 
 const reducers = combineReducers({
    game: gameReducer,

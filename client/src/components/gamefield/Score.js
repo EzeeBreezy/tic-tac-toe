@@ -4,15 +4,17 @@ import { faFlag, faFistRaised, faHandshake } from '@fortawesome/free-solid-svg-i
 import picVS from '../../assets/images/vs.png'
 import picX from '../../assets/images/X.png'
 import picO from '../../assets/images/O.png'
+import { connect } from 'react-redux'
 
 
-export const Score = () => {
+
+function Score({ nickname }) {
    return (
       <>
          <div className="row">
             <div className="col s4 center-align">
                <img src="#!" />
-               <h4 className="font-fam-mainheader">Own name</h4>
+               <h4 className="font-fam-mainheader">{nickname}</h4>
                <img src={picX} width="100px" />
             </div>
 
@@ -66,5 +68,9 @@ export const Score = () => {
       </>
    )
 }
+
+const connected = connect(state => ({ nickname: state.user.nickname }), null)
+
+export const ConnectedScore = connected(Score)
 
 //TODO read avatars

@@ -1,6 +1,6 @@
 import React from 'react'
 import { ConnectedBigField as BigField } from '../components/gamefield/BigField'
-import { Score } from '../components/gamefield/Score'
+import { ConnectedScore as Score } from '../components/gamefield/Score'
 
 export const GamePage = () => {
    return (

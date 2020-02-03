@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { ConnectedNavBar as NavBar } from './components/NavBar'
 import { Footer } from './components/Footer'
 import { Provider } from 'react-redux'
-import store from './Redux-store'
+import store from './reducers/Redux-store'
 import { randomAppColor } from './helpers/appColors' 
 
 

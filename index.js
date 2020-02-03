@@ -42,10 +42,8 @@ start()
 //TODO asmer - sockets(front/back/to store?), 
 //TODO asmer - reducers(+messageReducer?) - front:local game, global user+game// back: global register, game
 
-//TODO plan - move socket handlers to AC
+//TODO plan - move socket handlers to AC + thunk
 //TODO plan - create socket/games reg store on back
 //TODO plan - move front store to back
 
-//TODO remove went wrong from reconnect req
-//TODO fix red/blue nicknames
 //TODO on disconnect - reconnect request(front)
