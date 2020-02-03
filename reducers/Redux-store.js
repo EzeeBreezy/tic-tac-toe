@@ -1,13 +1,15 @@
 const Redux = require('redux')
-const socket = require('./socketRegistry')
+const thunk = require('redux-thunk')
+const usersReducer = require('./usersRegistry')
 const game = require('./gameRegistry')
 
 
 const reducers = Redux.combineReducers({
    games: game.gameRegistry,
-   sockets: socket.socketRegistry
+   users: usersReducer.usersRegistry
 })
 
-const store = Redux.createStore(reducers)
+const store = Redux.createStore(reducers, Redux.applyMiddleware(thunk.default))
+
 
 module.exports = store

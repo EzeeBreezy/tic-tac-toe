@@ -53,19 +53,18 @@ function AuthPage ({ loginAction }) {
 
    useEffect(() => {
       window.M.updateTextFields()
+      if (localStorage.userToken) {
+         socket.emit('reconnect request', localStorage.userToken)
+      }
+      socket.on('requestSuccess', reply => {
+         if (reply.status === 200) {
+            loginAction(reply.data.clearedUser)
+            localStorage.userToken = reply.data.token
+            localStorage.userId = reply.data.clearedUser._id
+         }
+      })
    }, [])
 
-
-   if (localStorage.userToken) {
-      socket.emit('reconnect request', localStorage.userToken)
-   }
-   socket.on('requestSuccess', reply => {
-      if (reply.status === 200) {
-         loginAction(reply.data.clearedUser)
-         localStorage.userToken = reply.data.token
-         localStorage.userId = reply.data.clearedUser._id
-      }
-   })
 
    return (
       <div className="row">

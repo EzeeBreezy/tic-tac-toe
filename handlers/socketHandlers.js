@@ -5,30 +5,38 @@ const bcrypt = require('bcryptjs')
 const config = require('config')
 const jwt = require('jsonwebtoken')
 const validator = require('validator')
-const store = require('../reducers/Redux-store')
+// const store = require('../reducers/Redux-store')
+// const userActions = require('../actions/userActions')
 
 const emitError = (socket, statusCode, msg) => socket.emit('requestError', { status: statusCode, message: msg })
 const emitSuccess = (socket, statusCode, msg, data = null) =>
    socket.emit('requestSuccess', { status: statusCode, message: msg, data })
 
+// store.subscribe(() => console.log(store.getState()))
 
-   store.subscribe(() => console.log(store.getState()))
+const userSocketRegistry = {}
+
+;(async () => {
+   let users = await User.find()
+   //!!!!!!!!!!!!!!!!
+   users.map(user => (userSocketRegistry[user._doc._id] = null))
+   //!!!!!!!!!!!!!!
+   // const clearedUsers = users.map(user => {
+   //    const { messages, __v, password, avatar, login, ...clearedUser } = user._doc
+   //    return clearedUser
+   // })
+   // store.dispatch(userActions.actionUpdateUsers(clearedUsers))
+})()
 
 function socketHandlers(socket) {
-
    console.log(`***user ${socket.id} connected`)
-//!!!!!!!!!!!!!!!!!!!!!!!!
-   console.log(store.getState())
-//!!!!!!!!!!!!!!!!!!!!!!!!!!
+
    socket.on('disconnect', () => {
       console.log(`***user ${socket.id} disconnected`)
+      for (let key in userSocketRegistry) if (userSocketRegistry[key] === socket.id) userSocketRegistry[key] = null
    })
 
-
-
-
    //*=========================AUTHORIZATION==============================
-
 
    socket.on('authorization request', async data => {
       console.log(`***user ${socket.id} Authorization request`)
@@ -44,7 +52,13 @@ function socketHandlers(socket) {
          const isMatch = await bcrypt.compare(password, user.password)
          if (!isMatch) return emitError(socket, 401, 'User not found')
 
-         const { messages, __v, ...clearedUser} = user._doc
+         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+         userSocketRegistry[user.id] = socket.id
+         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+         // store.getState().users.
+         // store.dispatch(userActions.actionUpdateOneUser({ id: user.id, field: 'socketId', value: socket.id }))
+
+         const { messages, __v, ...clearedUser } = user._doc
          delete clearedUser.password
 
          const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' }))
@@ -74,6 +88,7 @@ function socketHandlers(socket) {
       } catch (e) {
          emitError(socket, 500, 'Something went wrong, try again')
       }
+      //TODO emit to User List
    })
 
    socket.on('reconnect request', async data => {
@@ -84,7 +99,9 @@ function socketHandlers(socket) {
          const user = await User.findOne({ _id: decoded.userId })
          if (!user) return emitError(socket, 404, 'User not found')
 
-         const { messages, __v, ...clearedUser} = user._doc
+         userSocketRegistry[user.id] = socket.id
+
+         const { messages, __v, ...clearedUser } = user._doc
          delete clearedUser.password
 
          const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' }))
@@ -95,12 +112,8 @@ function socketHandlers(socket) {
       }
    })
 
-
-
-
    //*=========================CHAT==============================
 
-   
    socket.on('read all messages', async () => {
       console.log(`***user ${socket.id} Read messages`)
       //TODO read from backend store?
@@ -113,13 +126,13 @@ function socketHandlers(socket) {
       }
    })
 
-   socket.on('post message',async data => {
+   socket.on('post message', async data => {
       console.log(`***user ${socket.id} Post message`)
       try {
          const { user, message } = data
          const newMessage = new Message({ user, message })
          await newMessage.save()
-         
+
          const id = newMessage._id
          const userMessage = await Message.findOne({ _id: id }).populate('user', 'nickname')
 
@@ -132,11 +145,23 @@ function socketHandlers(socket) {
       }
    })
 
-
-
    //*=========================USER LIST============================
+   socket.on('read all players', async () => {
+      console.log(`***user ${socket.id} User list request`)
+      try {
+         let users = await User.find()
+         if (!users) return emitError(socket, 404, 'reading user list error')
 
+         const clearedUsers = users.map(user => {
+            const { messages, __v, password, avatar, login, ...clearedUser } = user._doc
+            return clearedUser
+         })
+
+         socket.emit('players', clearedUsers)
+      } catch (e) {
+         emitError(socket, 500, 'Something went wrong, try again')
+      }
+   })
 }
 
- 
- module.exports = socketHandlers
+module.exports = socketHandlers

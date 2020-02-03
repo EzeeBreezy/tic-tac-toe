@@ -66,7 +66,6 @@ export const gameReducer = (state, action) => {
          players: [],
 
          status: 'ACTIVE',
-         socketID: null
       }
 
    if (action.type === 'TURN') {

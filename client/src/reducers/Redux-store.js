@@ -2,6 +2,10 @@ import { createStore, combineReducers } from 'redux'
 import { gameReducer } from './gameReducer'
 import { userReducer } from './userReducer'
 
+// import { composeWithDevTools } from 'redux-devtools-extension'
+// import { applyMiddleware } from 'redux'
+// import thunk from 'redux-thunk'
+
 const reducers = combineReducers({
    game: gameReducer,
    user: userReducer

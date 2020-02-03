@@ -6,11 +6,7 @@ import socket from '../../helpers/socket'
 export const PlayersList = () => {
    //!!!!!!========socket stuff===========
 
-   const [plrList, setPlrList] = useState([
-      { nickname: 'nickname', status: 'ONLINE' },
-      { nickname: 'nickname', status: 'ONLINE' },
-      { nickname: 'nickname', status: 'ONLINE' }
-   ])
+   const [plrList, setPlrList] = useState([])
 
    useEffect(() => {
       socket.emit('read all players', () => console.log('players list request'))
@@ -20,7 +16,7 @@ export const PlayersList = () => {
       })
    }, [])
 
-
+//TODO new player and change status
    //  socket.on('new chat message', data => {
    //     console.log('new msg received: ', data)
    //     setMsgList([...msgList, data])
