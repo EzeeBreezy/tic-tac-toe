@@ -5,14 +5,15 @@ import { connect } from 'react-redux'
 import { ConnectedSidenav as Sidenav } from './Sidenav'
 
 
+
 function NavBar({ appColor, nickname, logOut }) {
    const history = useHistory()
 
    const logoutHandler = event => {
       event.preventDefault()
+      logOut()
       localStorage.removeItem('userId')
       localStorage.removeItem('userToken')
-      logOut()
       history.push('/')
    }
 

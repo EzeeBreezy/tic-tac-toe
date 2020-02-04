@@ -8,8 +8,7 @@ export const userReducer = (state, action) => {
         avatar: null,
         status: 'OFFLINE',
         currentGame: null,
-        //TODO do i need last 2?
-        socketID: null,
+        //TODO do i need last?
         gameStats: {}
     }
 

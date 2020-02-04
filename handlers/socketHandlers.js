@@ -31,9 +31,36 @@ const userSocketRegistry = {}
 function socketHandlers(socket) {
    console.log(`***user ${socket.id} connected`)
 
-   socket.on('disconnect', () => {
+
+   //*=========================DISCONNECT==============================
+   socket.on('disconnect', async () => {
       console.log(`***user ${socket.id} disconnected`)
-      for (let key in userSocketRegistry) if (userSocketRegistry[key] === socket.id) userSocketRegistry[key] = null
+      try {
+         let id 
+         for (let key in userSocketRegistry) if (userSocketRegistry[key] === socket.id) id = userSocketRegistry[key]
+         
+         console.log("ID:", id)
+         await User.findOneAndUpdate({ _id: id }, { status: "OFFLINE" })
+
+         userSocketRegistry[id] = null
+
+         let users = await User.find()
+   
+         const clearedUsers = users.map(user => {
+            const { messages, __v, password, avatar, login, ...clearedUser } = user._doc
+            return clearedUser
+         })
+   
+         socket.broadcast.emit('players', clearedUsers)
+         //TODO fix disconnect
+   
+      } catch (e) {
+         emitError(socket, 500, 'Something went wrong, try again')
+      }
+
+
+
+
    })
 
    //*=========================AUTHORIZATION==============================
@@ -46,7 +73,7 @@ function socketHandlers(socket) {
          let validationPassed = (validator.isEmail(login) && validator.isLength(password, { min: 6 })) || false
          if (!validationPassed) return emitError(socket, 400, 'Invalid type of credentials')
 
-         let user = await User.findOne({ login })
+         let user = await User.findOneAndUpdate({ login }, { status: "READY" })
          if (!user) return emitError(socket, 404, 'User not found')
 
          const isMatch = await bcrypt.compare(password, user.password)
@@ -58,10 +85,22 @@ function socketHandlers(socket) {
          // store.getState().users.
          // store.dispatch(userActions.actionUpdateOneUser({ id: user.id, field: 'socketId', value: socket.id }))
 
+
+
+         const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' }))
+
          const { messages, __v, ...clearedUser } = user._doc
          delete clearedUser.password
 
-         const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' }))
+         let users = await User.find()
+         if (!users) return emitError(socket, 404, 'reading user list error')
+   
+         const clearedUsers = users.map(user => {
+            const { messages, __v, password, avatar, login, ...clearedUser } = user._doc
+            return clearedUser
+         })
+   
+         socket.broadcast.emit('players', clearedUsers)
 
          emitSuccess(socket, 200, 'Authorization procedure passed successfully', { token, clearedUser })
       } catch (e) {
@@ -83,6 +122,8 @@ function socketHandlers(socket) {
          const hashedPassword = await bcrypt.hash(password, 12)
          const user = new User({ login, password: hashedPassword })
 
+         userSocketRegistry[user.id] = socket.id
+
          await user.save()
          emitSuccess(socket, 201, 'User created successfully', user.id)
       } catch (e) {
@@ -100,9 +141,19 @@ function socketHandlers(socket) {
          if (!user) return emitError(socket, 404, 'User not found')
 
          userSocketRegistry[user.id] = socket.id
-
+         
          const { messages, __v, ...clearedUser } = user._doc
          delete clearedUser.password
+
+         let users = await User.find()
+         if (!users) return emitError(socket, 404, 'reading user list error')
+   
+         const clearedUsers = users.map(user => {
+            const { messages, __v, password, avatar, login, ...clearedUser } = user._doc
+            return clearedUser
+         })
+   
+         socket.broadcast.emit('players', clearedUsers)
 
          const token = JSON.stringify(jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' }))
 
@@ -116,7 +167,6 @@ function socketHandlers(socket) {
 
    socket.on('read all messages', async () => {
       console.log(`***user ${socket.id} Read messages`)
-      //TODO read from backend store?
       try {
          const messages = await Message.find().populate('user', 'nickname')
          if (!messages) return emitError(socket, 404, 'User not found')
@@ -162,6 +212,92 @@ function socketHandlers(socket) {
          emitError(socket, 500, 'Something went wrong, try again')
       }
    })
+
+//*========================= CHANGE STATUS ============================
+
+socket.on('change status', async data => {
+   console.log(`***user ${socket.id} changed status to ${data.status}`)
+   try {
+
+      await User.findOneAndUpdate({ _id: data.id }, { status: data.status })
+
+      for (let key in userSocketRegistry) if (userSocketRegistry[key] === socket.id) userSocketRegistry[key] = null
+
+      let users = await User.find()
+      if (!users) return emitError(socket, 404, 'reading user list error')
+
+      const clearedUsers = users.map(user => {
+         const { messages, __v, password, avatar, login, ...clearedUser } = user._doc
+         return clearedUser
+      })
+
+      socket.broadcast.emit('players', clearedUsers)
+
+   } catch (e) {
+      emitError(socket, 500, 'Something went wrong, try again')
+   }
+})
+
+
+//*========================= GAME REQUEST ============================
+socket.on('game request', async data => {
+   console.log(`***user ${socket.id} requested game with ${data.opponent}`)
+   // try {
+      //TODO start game
+//?? check if not self-invite
+//?? check if both are free (games registry?)
+//?? update both player statuses
+//?? assign XO, define first turner(X)
+//?? system messages?
+//? validate next turn active field
+//?? create new Game
+//?? reply with score info
+//?? reply with game info (combine?)
+
+
+//TODO games registry
+//? id -> status, players
+//? finished -> remove
+   //    await User.findOneAndUpdate({ _id: data.id }, { status: data.status })
+
+   //    for (let key in userSocketRegistry) if (userSocketRegistry[key] === socket.id) userSocketRegistry[key] = null
+
+   //    let users = await User.find()
+   //    if (!users) return emitError(socket, 404, 'reading user list error')
+
+   //    const clearedUsers = users.map(user => {
+   //       const { messages, __v, password, avatar, login, ...clearedUser } = user._doc
+   //       return clearedUser
+   //    })
+
+   //    socket.broadcast.emit('players', clearedUsers)
+
+   // } catch (e) {
+   //    emitError(socket, 500, 'Something went wrong, try again')
+   // }
+})
+
+//TODO Turn event
+//? find game
+//?? validate turn
+//? validate win
+//? change turner
+//? system messages
+//? validate next turn active field
+//? update Game
+//? reply with game info
+
+//TODO Game end
+//? find game
+//? flee event
+//? system messages
+//? update Game
+//? reply with game info
+
+//TODO check if i`m in game?
+//? populate all Games by id
+//? check if any of them active? (replace with game registry? -> will need reducer any way?)
+
 }
 
 module.exports = socketHandlers

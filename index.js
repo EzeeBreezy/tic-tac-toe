@@ -13,7 +13,8 @@ async function start() {
       await mongoose.connect(config.get('mongoURI'), {
          useNewUrlParser: true,
          useUnifiedTopology: true,
-         useCreateIndex: true
+         useCreateIndex: true,
+         useFindAndModify: false
       })
       server.listen(PORT, () => console.log(`App has been started on port ${PORT}...`))
       io.on('connection', socketHandlers)

@@ -16,11 +16,8 @@ export const PlayersList = () => {
       })
    }, [])
 
-//TODO new player and change status
-   //  socket.on('new chat message', data => {
-   //     console.log('new msg received: ', data)
-   //     setMsgList([...msgList, data])
-   //  })
+//TODO AWAY  /IN Game statuses
+
 
    //!!!!!!!!!!!!!!!!!!!========end socket stuff===========
 
@@ -38,8 +35,10 @@ export const PlayersList = () => {
    )
 }
 
-//TODO use className='pulse'
+
 
 //TODO search
 
 //TODO keys for Players
+
+//TODO exclude self
