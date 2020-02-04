@@ -38,13 +38,10 @@ start()
 
 
 
-//TODO asmer - keep system messages in model (back redux)?, gamefield set cells IDs
 //TODO asmer - pictures notimported - use multer, 
 //TODO asmer - sockets(front/back/to store?), 
-//TODO asmer - reducers(+messageReducer?) - front:local game, global user+game// back: global register, game
 
 //TODO plan - move socket handlers to AC + thunk
 //TODO plan - create socket/games reg store on back
 //TODO plan - move front store to back
 
-//TODO on disconnect - reconnect request(front)

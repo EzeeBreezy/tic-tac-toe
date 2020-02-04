@@ -79,3 +79,7 @@ const connected = connect(state => ({ nickname: state.user.nickname, login: stat
 export const ConnectedSidenav = connected(Sidenav)
 
 //TODO status change
+
+//TODO nickname and ava change
+
+//TODO gather stats

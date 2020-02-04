@@ -5,9 +5,9 @@ const socket = SocketIOClient('http://localhost:5000')
 
 socket.on('connect', () => console.log('Client socket id: ', socket.id))
 
-//TODO reconnect request?
+//TODO move reconnect request here?
 
 socket.on ('disconnect', () => console.log('Disconnected', socket.id))
-//TODO clear on disconnect? reconnect request?
+//TODO need to clear something?  on disconnect? on disconnect - reconnect request?
 
 export default socket

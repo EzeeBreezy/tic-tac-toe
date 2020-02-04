@@ -294,8 +294,8 @@ socket.on('game request', async data => {
 //? update Game
 //? reply with game info
 
-//TODO check if i`m in game?
-//? populate all Games by id
+//TODO check if i`m in game event?? -> use in reconnect and auth
+//? populate all Games by id or by creation date?
 //? check if any of them active? (replace with game registry? -> will need reducer any way?)
 
 }

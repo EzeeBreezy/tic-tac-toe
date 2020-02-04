@@ -28,6 +28,6 @@ function App() {
 export default App
 
 
-//TODO add loader everywhere
+//TODO add loader everywhere (game)
 
 //TODO check all console logs, commented lines, fonts

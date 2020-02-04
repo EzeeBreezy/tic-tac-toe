@@ -11,9 +11,15 @@ const schema = new Schema({
 //TODO shcema methods:
 //? validate win -> assign winner
 //? validate next turn
-//? system messages
+//? system messages (keep only last?)
 //? assign XO and frist turner
 //? change turner
+
+//TODO system messages:
+//? Player (XO) made his move, now turn belogns to (XO)
+//? (XO) won. Game ended
+//? game started
+
 // schema.methods.getAt = function(x,y){
 //    return this.gameState[y*9 + x]
 // }

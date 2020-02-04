@@ -138,4 +138,4 @@ const connected = connect(state => ({}), { loginAction: actionLogin })
 
 export const ConnectedAuthPage = connected(AuthPage)
 
-//TODO setTimeout to avoid endless server response waiting time
+//TODO setTimeout to avoid endless server response waiting time (already realized by socket?)

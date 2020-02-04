@@ -84,8 +84,7 @@ export const gameReducer = (state, action) => {
       }
    }
 
-   //TODO start game, set signs
-   //TODO turn validator / next turn validator
+   //TODO turn validator / next turn validator? read from back?
 
    return state
 }
