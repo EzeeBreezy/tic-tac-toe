@@ -3,13 +3,15 @@ import picX from '../../assets/images/X.png'
 import picO from '../../assets/images/O.png'
 import { actionTurn } from '../../actions/gameActions'
 import { connect } from 'react-redux'
+import socket from '../../helpers/socket'
 
 
-function Cell({sign, coords, turn}) {
+function Cell({sign, coords, gameId, player, turn}) {
    let pic = sign === 'x' ? picX : picO
 
    const clickHandler = () => {
-      turn(coords)
+      socket.emit('turn', { player: player, coords, gameId })
+      // turn(coords)
    }
 
    return (
@@ -19,6 +21,6 @@ function Cell({sign, coords, turn}) {
    )
 }
 
-const connected = connect(state => ({}), { turn: actionTurn })
+const connected = connect(state => ({ gameId: state.game._id, player: state.user._id}), { turn: actionTurn })
 
 export const ConnectedCell = connected(Cell)

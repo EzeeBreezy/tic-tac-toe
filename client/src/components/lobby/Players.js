@@ -1,28 +1,20 @@
 import React from 'react'
-import socket from '../../helpers/socket'
+import { actionGameRequest } from '../../actions/gameActions'
+import { connect } from 'react-redux'
 
-const Player = ({ nickname, status, _id }) => {
-   const startGame = () => {
-      socket.emit('game request', { user: localStorage.userId, opponent: _id })
-      console.log('game request sent', { user: localStorage.userId, opponent: _id })
+const Player = ({ nickname, status, _id, offerGame }) => {
+   const startGame = () => offerGame({ _id })
 
-      socket.on('start game', reply => {
-         window.M.toast({ html: reply.message, classes: 'rounded' })
-      })
-      //TODO switch to GAME tab on startgame
-
-      socket.on('requestError', reply => {
-         window.M.toast({ html: reply.message, classes: 'rounded' })
-      })
-   }
-
+   //TODO switch to GAME tab on startgame
+   //TODO exclude self
+   //TODO make inactive while in game -> all buttons
 
    let statusColor =
       status === 'READY'
          ? 'green-text text-accent-3'
          : status === 'OFFLINE'
-            ? 'deep-orange-text text-accent-3'
-            : 'amber-text text-accent-3'
+         ? 'deep-orange-text text-accent-3'
+         : 'amber-text text-accent-3'
 
    return (
       <div className="row grey darken-2" style={{ height: '2.25rem', margin: '5px 10px 0 10px' }}>
@@ -41,6 +33,12 @@ const Player = ({ nickname, status, _id }) => {
    )
 }
 
-//TODO  statuses - ready/waiting/away/playing/offline
+//TODO  statuses - ready/away/playing/offline
 
-export const Players = ({ props }) => props.map(player => <Player {...player} key={player.id} />)
+const connected = connect(state => ({}), { offerGame: actionGameRequest })
+
+const ConnectedPlayer = connected(Player)
+
+//TODO connect all comps in one place
+
+export const Players = ({ props }) => props.map(player => <ConnectedPlayer {...player} key={player.id} />)
