@@ -29,9 +29,9 @@ export const Chat = () => {
       setMsgInpValue('')
       console.log('msg sent')
 
-      socket.on('requestError', reply => {
-         window.M.toast({ html: reply.message, classes: 'rounded' })
-      })
+      // socket.on('requestError', reply => {
+      //    window.M.toast({ html: reply.message, classes: 'rounded' })
+      // })
    }
 
 

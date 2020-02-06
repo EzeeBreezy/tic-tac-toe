@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs')
 const config = require('config')
 const jwt = require('jsonwebtoken')
 const validator = require('validator')
+const { validateTurn } = require('../helpers/turnValidator')
+const { validateWin } = require('../helpers/winValidator')
 // const store = require('../reducers/Redux-store')
 // const userActions = require('../actions/userActions')
 
@@ -247,10 +249,12 @@ function socketHandlers(socket) {
       try {
          const { player, opponent } = data
 
+         //TODO it does not work
          if (Object.values(gamesRegistry).includes(opponent)) return emitError(socket, 500, 'Player already in game')
 
          await User.updateMany({ $or: [{ _id: player }, { _id: opponent }] }, { status: 'PLAYING' })
          //TODO emit statuses update then
+         //TODO save current game id in User and send on Front
 
          const game = new Game({})
          game.initNewGame(player, opponent)
@@ -261,6 +265,7 @@ function socketHandlers(socket) {
             playerX: game.playerX,
             playerO: game.playerO
          }
+         console.log(gamesRegistry)
          //?? system messages?
          //?? reply with score info
          socket.emit('game state', game._doc)
@@ -278,17 +283,12 @@ function socketHandlers(socket) {
       console.log(`***user ${socket.id} flee request`)
       try {
          // const { player, opponent } = data
-
          //TODO playing check does not work so far(something with registry)
          // if (Object.values(gamesRegistry).includes(opponent)) return emitError(socket, 500, 'Player already in game')
-         
          //TODO check if opponent still online in registry
          // await User.updateMany({ $or: [{ _id: player }, { _id: opponent }] }, { status: 'PLAYING' })
          //TODO emit statuses update then
-
-
          // await game.save()
-
          // gamesRegistry[game._id] = {
          //    playerX: game.playerX,
          //    playerO: game.playerO
@@ -300,7 +300,6 @@ function socketHandlers(socket) {
       } catch (e) {
          // emitError(socket, 500, 'Something went wrong, try again')
       }
-
    })
 
    socket.on('turn', async data => {
@@ -308,33 +307,68 @@ function socketHandlers(socket) {
       try {
          const { player, coords, gameId } = data
          console.log(player, coords)
-         const game = Game.findOne({ _id: gameId })
-         console.log(game._doc)
-         //? if(!game) emit error
+         const game = await Game.findOne({ _id: gameId })
+         if (!game) return emitError(socket, 500, 'Game not found')
 
-         // game.initNewGame(player, opponent)
+         // console.log(game.boardState)
 
-         // await game.save()
+         //check if turn was valid
+         let allowedTurner = game.nextTurn == 'x' ? `${game.playerX}` : `${game.playerO}`
+
+         console.log(allowedTurner, game.nextTurn)
+
+         if (!validateTurn(player, allowedTurner, coords, game.boardState, game.bigField))
+            return emitError(socket, 500, 'Invalid turn')
+         // console.log('passed turnval', game.boardState)
+         // make a move
+         game.boardState[coords[0]][coords[1]][coords[2]][coords[3]] = game.nextTurn
+         // console.log('made a move', game.boardState)
+         //inner field - validator will replace all 'a' with 'e'
+         for (let i = 0; i < 3; i++)
+            for (let j = 0; j < 3; j++) {
+               game.bigField[i][j] = validateWin(game.boardState[i][j])
+            }
+            // console.log('passed inner', game.bigField)
+         //outer field
+         const winner = validateWin(game.bigField, game.nextTurn)
+         if (winner == game.nextTurn) {
+            winner == 'x' ? game.winner = game.playerX : game.winner = game.playerO
+         }
+         // console.log('passed outer', winner)
+         //set allowed inner fields
+         if (game.bigField[coords[2]][coords[3]] != 'e') {
+            for (let i = 0; i <= 2; i++)
+               for (let j = 0; j <= 2; j++) if (game.bigField[i][j] == 'e') game.bigField[i][j] = 'a'
+         } else game.bigField[coords[2]][coords[3]] = 'a'
+         // console.log('passed allower')
+         //change turner
+         game.nextTurn == 'x' ? game.nextTurn = 'o' : game.nextTurn = 'x'
+
+         await Game.replaceOne({ _id: game.id }, { ...game._doc })
+
+         // console.log('after save', game.boardState)
 
          //?? system messages?
 
-         socket.emit('game state', game._doc)
-         socket.broadcast.to(userSocketRegistry[opponent]).emit('game state', game._doc)
+
+         let opponent = game.playerX
+         if (player == game.playerX) opponent = game.playerO
+
+         // player === game.playerX ? game.playerO : game.playerX
+         //    gamesRegistry[game.id].playerX === player ? gamesRegistry[game.id].playerO : gamesRegistry[game.id].playerX
+
+         console.log(player == game.playerX)
+            console.log(opponent)
+            console.log('opponent socket', userSocketRegistry[opponent])
+            console.log('sockets', userSocketRegistry)
+
+         socket.emit('game state', game)
+         socket.to(`${userSocketRegistry[opponent]}`).emit('game state', game)
+         // socket.broadcast.to(userSocketRegistry[opponent]).emit('game state', game)
       } catch (e) {
          emitError(socket, 500, 'Something went wrong, try again')
       }
-
-   //TODO Turn event
-   //? find game
-   //?? validate turn
-   //? validate win
-   //? change turner -> validate next turn active field -> system messages
-   //? update Game
-   //? reply with game info
    })
-
-
-
 
    //TODO Game end
    //? find game
@@ -344,8 +378,13 @@ function socketHandlers(socket) {
    //? reply with game info
 
    //TODO check if i`m in game event?? -> use in reconnect and auth
-   //? populate all Games by id or by creation date?
-   //? check if any of them active? (replace with game registry? -> will need reducer any way?)
+   //? read from user
 }
+
+
+//TODO system messages:
+//? Player (XO) made his move, now turn belogns to (XO)
+//? (XO) won. Game over
+//? Game started. Move belongs to X
 
 module.exports = socketHandlers

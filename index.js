@@ -39,9 +39,7 @@ start()
 
 
 //TODO asmer - pictures notimported - use multer, 
-//TODO asmer - sockets(front/back/to store?), 
 
 //TODO plan - move socket handlers to AC + thunk
 //TODO plan - create socket/games reg store on back
-//TODO plan - move front store to back
 

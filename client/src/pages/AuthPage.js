@@ -30,10 +30,10 @@ function AuthPage ({ loginAction }) {
          }
       })
 
-      socket.on('requestError', reply => {
-         window.M.toast({ html: reply.message, classes: 'rounded' })
-         setLoading(false)
-      })
+      // socket.on('requestError', reply => {
+      //    window.M.toast({ html: reply.message, classes: 'rounded' })
+      //    setLoading(false)
+      // })
    }
 
    const registerHandler = () => {
@@ -45,10 +45,10 @@ function AuthPage ({ loginAction }) {
          setLoading(false)
       })
       
-      socket.on('requestError', reply => {
-         window.M.toast({ html: reply.message, classes: 'rounded' })
-         setLoading(false)
-      })
+      // socket.on('requestError', reply => {
+      //    window.M.toast({ html: reply.message, classes: 'rounded' })
+      //    setLoading(false)
+      // })
    }
 
    useEffect(() => {

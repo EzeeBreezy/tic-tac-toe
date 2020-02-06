@@ -3,7 +3,8 @@ import { SmallField } from './SmallField'
 import { connect } from 'react-redux'
 
 
-function BigField({ boardState }) {
+function BigField({ boardState, nextTurn }) {
+   console.log(boardState)
    return (
       <table className="BigField centered">
          <tbody>

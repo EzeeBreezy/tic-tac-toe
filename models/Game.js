@@ -1,12 +1,10 @@
 const { Schema, model, Types } = require('mongoose')
-const { validateTurn } = require('../helpers/turnValidator')
 
 const schema = new Schema({
    date: { type: Date, default: Date.now },
    playerX: { type: Types.ObjectId, ref: 'User' },
    playerO: { type: Types.ObjectId, ref: 'User' },
    winner: { type: String, default: 'IN_PROGRESS' },
-   lastTurnCoords: { type: String, default: 'NONE' },
    nextTurn: { type: String, default: 'x' },
    boardState: [[[[String]]]],
    bigField: [[String]]
@@ -75,27 +73,6 @@ schema.methods.initNewGame = function(id1, id2) {
       ]
    )
 }
-
-schema.methods.turn = function(turner, coords) {
-   const allowedTurner = (this.nextTurn = 'x' ? this.playerX : this.playerO)
-   const turnValid = turnValidator(turner, allowedTurner, coords, this.boardState, this.bigField)
-
-   //TODO if true: change turner, newBoardState, newBigField (with 'a' for allowed)
-   //TODO winValidator logic should include 'a'
-}
-
-
-//TODO shcema methods:
-//? validate win -> assign winner
-//? validate next turn
-//? system messages (keep only last?)
-//? assign XO and frist turner
-//? change turner
-
-//TODO system messages:
-//? Player (XO) made his move, now turn belogns to (XO)
-//? (XO) won. Game ended
-//? game started
 
 
 module.exports = model('Game', schema)

@@ -8,8 +8,6 @@ export const userReducer = (state, action) => {
         avatar: null,
         status: 'OFFLINE',
         currentGame: null,
-        //TODO do i need last?
-        gameStats: {}
     }
 
     //TODO should i use socketHandlers and localstorage here?
@@ -27,11 +25,6 @@ export const userReducer = (state, action) => {
         avatar: null,
         status: 'OFFLINE',
         currentGame: null,
-
-        //!!!!!!!
-        gameStats: {}
-        //!!!!!!!!!
-
     }
     
     return state
