@@ -7,7 +7,6 @@ import socket from '../../helpers/socket'
 
 function Cell({ sign, userSign, coords, gameId, player, turn, nextTurn }) {
    
-
    
    let pic = sign === 'x' ? picX : picO
 
