@@ -13,13 +13,22 @@ function BigField({ boardState, bigField, nextTurn }) {
       return false
    }
 
+   //? style={{backgroundColor: 'rgba(34, 181, 108, 0.15)'}}
+
    return (
       <table className="BigField centered">
          <tbody>
             {boardState.map((row, boardIndex) => (
                <tr key={boardIndex}>
                   {row.map((fieldState, fieldIndex) => (
-                     <td key={`${boardIndex}${fieldIndex}`}>
+                     <td
+                        key={`${boardIndex}${fieldIndex}`}
+                        style={
+                           bigField[boardIndex][fieldIndex] === 'a'
+                              ? { backgroundColor: 'rgba(34, 181, 108, 0.15)' }
+                              : null
+                        }
+                     >
                         {cellHandler(boardIndex, fieldIndex) ? (
                            <img src={cellHandler(boardIndex, fieldIndex)} width="125px" />
                         ) : (
