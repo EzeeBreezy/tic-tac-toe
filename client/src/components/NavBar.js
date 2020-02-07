@@ -6,7 +6,7 @@ import { ConnectedSidenav as Sidenav } from './Sidenav'
 
 
 
-function NavBar({ appColor, nickname, logOut }) {
+function NavBar({ appColor, nickname, logOut, game }) {
    const history = useHistory()
 
    const logoutHandler = event => {
@@ -21,6 +21,19 @@ function NavBar({ appColor, nickname, logOut }) {
       let elems = document.querySelectorAll('.sidenav')
       window.M.Sidenav.init(elems)
    }, [])
+
+   let activeLink
+
+   useEffect(() => {
+
+      if (game) {
+         history.push('/game')
+         activeLink = "font-fam-tidy"
+      } else {
+         history.push('/lobby')
+         activeLink = "font-fam-tidy grey-text disabled-link"
+      }
+   }, [game])
 
    const sideNavHandler = event => {
       event.preventDefault()
@@ -39,7 +52,7 @@ function NavBar({ appColor, nickname, logOut }) {
                   </NavLink>
                </li>
                <li>
-                  <NavLink to="/game" className="font-fam-tidy">
+                  <NavLink to="/game" className={game ? "font-fam-tidy" : "font-fam-tidy grey-text disabled-link"}>
                      Game
                   </NavLink>
                </li>
@@ -70,6 +83,9 @@ function NavBar({ appColor, nickname, logOut }) {
    )
 }
 
-const connected = connect(state => ({ nickname: state.user.nickname }), { logOut: actionLogout })
+const connected = connect(state => ({ nickname: state.user.nickname, game: state.game._id }), { logOut: actionLogout })
 
 export const ConnectedNavBar = connected(NavBar)
+
+
+//TODO change game id to state.user.currentGame =-> check if its not affect game/lobby switched

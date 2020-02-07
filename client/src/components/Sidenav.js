@@ -3,16 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
 
-
 function Sidenav({ nickname, login }) {
-
    return (
       <ul id="profile" className="sidenav">
          <li>
             <div className="user-view">
                <div>
                   <img className="circle" src="#!" />
-                  <a className="btn-floating btn-small waves-effect waves-light red hoverable" href="#!" >
+                  <a className="btn-floating btn-small waves-effect waves-light red hoverable" href="#!">
                      <i className="material-icons" style={{ fontSize: '0.9rem' }}>
                         <FontAwesomeIcon icon={faPlus} />
                      </i>
@@ -29,6 +27,19 @@ function Sidenav({ nickname, login }) {
                <a href="#!">
                   <span className="light-blue-text text-darken-2 font-fam-mainheader">{login}</span>
                </a>
+            </div>
+         </li>
+         <li>
+            <div className="divider grey accent-3"></div>
+         </li>
+         <li>
+            <div class="switch center">
+               <label className='font-fam-mainheader'>
+                  <span className='amber-text text-darken-2' style={{fontSize: '1.1rem'}}>AWAY </span>
+                  <input type="checkbox" />
+                  <span className="lever" />
+                  <span className='green-text text-darken-2'style={{fontSize: '1.1rem'}}>READY </span>
+               </label>
             </div>
          </li>
          <li>

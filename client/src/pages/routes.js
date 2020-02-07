@@ -33,4 +33,3 @@ export const useRoutes = isAuthenticated => {
    )
 }
 
-//TODO make GAME inactive while there is no game -> useRoutes?
