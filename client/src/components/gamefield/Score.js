@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFlag, faFistRaised, faHandshake } from '@fortawesome/free-solid-svg-icons'
 import picVS from '../../assets/images/vs.png'
@@ -8,14 +8,19 @@ import { connect } from 'react-redux'
 
 
 
-function Score({ nickname }) {
+function Score({ nickname, userSign }) {
+   const [ sign, setSign ] = useState('x')
+   useEffect(()=> {
+      userSign === 'o' ? setSign('o') : setSign('x')
+   }, [userSign])
+
    return (
       <>
          <div className="row">
             <div className="col s4 center-align">
                <img src="#!" />
                <h4 className="font-fam-mainheader">{nickname}</h4>
-               <img src={picX} width="100px" />
+               <img src={sign === 'x' ? picX : picO} width="100px" />
             </div>
 
             <div className="col s4 center-align valign-wrapper">
@@ -25,7 +30,7 @@ function Score({ nickname }) {
             <div className="col s4 center-align">
                <h4 className="font-fam-mainheader">Opponent Name</h4>
                <img src="#!" /> <br/>
-               <img src={picO} width="100px" />
+               <img src={sign === 'x' ? picO : picX} width="100px" />
             </div>
          </div>
 
@@ -69,7 +74,7 @@ function Score({ nickname }) {
    )
 }
 
-const connected = connect(state => ({ nickname: state.user.nickname }), null)
+const connected = connect(state => ({ nickname: state.user.nickname, userSign: state.game.userSign }), null)
 
 export const ConnectedScore = connected(Score)
 
